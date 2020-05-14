@@ -36,7 +36,7 @@ exports.postOneScream = (req,res) => {
     db.collection('screams')
         .add(newScream)
         .then(doc => {
-            res.json({ message: `Created sucessfully the scream with ID = ${doc.id}`});
+            res.json({ message: `Created successfully the scream with ID = ${doc.id}`});
         })
         .catch(err => {
             res.status(500).json({error :'something went wrong'});
