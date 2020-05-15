@@ -9,7 +9,9 @@ const  FBAuth  = require('./utils/fbAuth');
 const firebase = require('firebase');
 const config = require('./utils/config');
 
-
+const func = (string) => { 
+    return string;
+}
 // Screams routes
 app.get('/screams', getAllScreams );
 app.post('/screams', FBAuth, postOneScream);
