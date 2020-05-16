@@ -33,7 +33,7 @@ exports.signup =  (req,res) => {
     }
 
     if(isEmptyString(newUser.password)) { 
-        errors.password = "Pas sword must not be empty";
+        errors.password = "Password must not be empty";
     } 
     
     if(newUser.password !== newUser.confirmPassword) { 
@@ -138,9 +138,12 @@ exports.uploadImage = (req, res) => {
         console.log(filename);
         console.log(mimetype);
          
+        if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+            return res.status(400).json({ error: "Wrong file type submitted" });
+        }
 
         const imageExtension = filename.split('.')[filename.split('.').length-1];
-        const imageFileName = `${Math.round(Math.random()*1000000000)}.${imageExtension}`;
+        imageFileName = `${Math.round(Math.random()*1000000000000).toString()}.${imageExtension}`;
 
         const filepath = path.join(os.tmpdir(), imageFileName);
         imageToBeUploaded = {filepath, mimetype};
@@ -151,7 +154,7 @@ exports.uploadImage = (req, res) => {
     busboy.on('finish', () => { 
         admin.storage().bucket().upload(imageToBeUploaded.filepath, {
             resumable : false,
-            metadata = {
+            metadata  : {
                 metadata : {
                     contentType : imageToBeUploaded.mimetype 
                 }
@@ -171,6 +174,5 @@ exports.uploadImage = (req, res) => {
              return res.status(500).json({Error:err.code });
         });
     });
-
-
+    busboy.end(req.rawBody);
 }
